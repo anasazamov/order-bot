@@ -1,112 +1,145 @@
-from sqlite3 import connect
-from pathlib import Path
-
-folder = str(Path(__file__).parent)
+from tinydb import TinyDB, Query
+from datetime import datetime
 
 class DB:
-
-    def get_db(self):
-        return connect(f'{folder}/db.db')
-
-    def get_cursor(self):
-        return self.get_db().cursor()
+    def __init__(self):
+        self.db = TinyDB('db.json', indent=4)  # Ma'lumotlar bazasi fayli
+        self.users_table = self.db.table('users')
+        self.food_table = self.db.table('food')
+        self.orders_table = self.db.table('orders')
 
     def startup(self):
-        cursor = self.get_cursor()
-        cursor.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, chat_id BIGINT)')
-        cursor.execute('CREATE TABLE IF NOT EXISTS food (id INTEGER PRIMARY KEY, name TEXT, image TEXT)')
-        cursor.execute('''
-                            CREATE TABLE IF NOT EXISTS orders (
-                                id INTEGER PRIMARY KEY,
-                                name TEXT,
-                                created_at DATE DEFAULT CURRENT_DATE,
-                                user_id INTEGER,
-                                food_id INTEGER,
-                                FOREIGN KEY(user_id) REFERENCES users(id),
-                                FOREIGN KEY(food_id) REFERENCES food(id)
-                            )
-                        ''')
-        self.get_db().commit()
-        self.get_db().close()
+        """TinyDB uchun boshlang'ich jadvalni yaratish"""
+        # Ma'lumotlar bazasi avtomatik ravishda faylni yaratadi
+        # if len(self.users_table.all()) == 0:
+        #     self.users_table.insert_multiple([
+        #         {'id': 1, 'name': 'John Doe', 'chat_id': 123456789},
+        #         {'id': 2, 'name': 'Jane Doe', 'chat_id': 987654321}
+        #     ])
 
+        # if len(self.food_table.all()) == 0:
+        #     self.food_table.insert_multiple([
+        #         {'id': 1, 'name': 'Pizza', 'image': 'pizza.jpg'},
+        #         {'id': 2, 'name': 'Burger', 'image': 'burger.jpg'}
+        #     ])
+    
     def get_all_orders(self):
-        cursor = self.get_cursor()
-        cursor.execute('SELECT * FROM orders WHERE created_at = CURRENT_DATE')
-        return cursor.fetchall()
+        """Hozirgi kundagi barcha buyurtmalarni olish"""
+        return self.orders_table.search(Query().created_at == datetime.now().strftime('%Y-%m-%d'))
+    
+    def get_today_orders_summary(self):
+        """Bugungi buyurtmalarni va qaysi taomdan nechtadan buyurtma berilganini hisoblash"""
+        # Hozirgi kunning sanasi
+        today = datetime.now().strftime('%Y-%m-%d')
+        
+        # Bugungi buyurtmalarni olish
+        orders = self.orders_table.search(Query().created_at == today)
+        
+        # Taomlar bo'yicha buyurtmalarni hisoblash
+        food_summary = {}
+
+        for order in orders:
+            food_id = order['food_id']
+            food = self.food_table.get(Query().id == food_id)
+            if food:
+                food_name = food['name']
+                if food_name not in food_summary:
+                    food_summary[food_name] = 1
+                else:
+                    food_summary[food_name] += 1
+        
+        return food_summary
 
     def register_user(self, name, chat_id):
-        cursor = self.get_cursor()
-        cursor.execute('INSERT INTO users (name, chat_id) VALUES (?, ?)', (name, chat_id))
-        self.get_db().commit()
-        self.get_db().close()
+        """Yangi foydalanuvchini ro'yxatdan o'tkazish"""
+        user_id = len(self.users_table.all()) + 1  
+        self.users_table.insert({'id': user_id, 'name': name, 'chat_id': chat_id})
 
     def order_food(self, user_id, food_id):
-        cursor = self.get_cursor()
-        cursor.execute('INSERT INTO orders (user_id, food_id) VALUES (?, ?)', (user_id, food_id))
-        self.get_db().commit()
-        self.get_db().close()
+        """Foydalanuvchi buyurtma qilish"""
+        food = self.food_table.get(Query().id == food_id)
+        if food:
+            order = {
+                'user_id': user_id,
+                'food_id': food_id,
+                'created_at': datetime.now().strftime('%Y-%m-%d')
+            }
+            self.orders_table.insert(order)
+            return order
+        return None
 
     def get_user(self, chat_id):
-        cursor = self.get_cursor()
-        cursor.execute('SELECT * FROM users WHERE chat_id = ?', (chat_id,))
-        return cursor.fetchone()
+        """Foydalanuvchini chat_id orqali olish"""
+        return self.users_table.search(Query().chat_id == chat_id)
 
     def get_food(self):
-        cursor = self.get_cursor()
-        cursor.execute('SELECT * FROM food')
-        return cursor.fetchall()
+        """Taomlar ro'yxatini olish"""
+        return self.food_table.all()
 
     def get_food_by_id(self, food_id):
-        cursor = self.get_cursor()
-        cursor.execute('SELECT * FROM food WHERE id = ?', (food_id,))
-        return cursor.fetchone()
+        """Taomni ID orqali olish"""
+        return self.orders_table.get(Query().id == food_id, Query().created_at == datetime.now().strftime('%Y-%m-%d'))
 
     def add_food(self, name, image):
-        print(f"Adding food: {name}, {image}")  # Debugging uchun
-        if image is None:
-            image = "No image"
-        cursor = self.get_cursor()
-        print(cursor.execute('INSERT INTO food (name, image) VALUES (?, ?)', (name, image)))
-        self.get_db().commit()  # O'zgarishlarni saqlash
-        print("Food added successfully!")  # Bu yerga yozilsa, ma'lumot bazasiga qo'shilgan
-        self.get_db().close()  # O'zgarishlarni saqlab, bazani yopish
-        
+        """Yangi taom qo'shish"""
+        food_id = len(self.food_table.all()) + 1  # Yangi taom ID
+        self.food_table.insert({'id': food_id, 'name': name, 'image': image})
+        return {'id': food_id, 'name': name, 'image': image}
 
     def delete_food(self, food_id):
-        cursor = self.get_cursor()
-        cursor.execute('DELETE FROM food WHERE id = ?', (food_id,))
-        self.get_db().commit()
-        self.get_db().close()
+        """Taomni o'chirish"""
+        self.food_table.remove(Query().id == food_id)
 
     def delete_order(self, order_id):
-        cursor = self.get_cursor()
-        cursor.execute('DELETE FROM orders WHERE id = ?', (order_id,))
-        self.get_db().commit()
-        self.get_db().close()
-
-    def get_order_id_by_food_id(self, food_id):
-        cursor = self.get_cursor()
-        cursor.execute('SELECT id FROM orders WHERE food_id = ? AND created_at = CURRENT_DATE', (food_id,))
-        return cursor.fetchone()
+        """Buyurtmani o'chirish"""
+        self.orders_table.remove(Query().id == order_id)
 
     def get_chat_ids(self):
-        cursor = self.get_cursor()
-        cursor.execute('SELECT chat_id FROM users')
-        return cursor.fetchall()
-    
-    def get_current_orders(self):
-        cursor = self.get_cursor()
-        cursor.execute('SELECT * FROM orders WHERE created_at = CURRENT_DATE')
-        return cursor.fetchall()
-    
-    def get_user_order_current(self, user_id):
-        cursor = self.get_cursor()
-        cursor.execute('SELECT * FROM orders WHERE user_id = ? AND created_at = CURRENT_DATE', (user_id,))
-        return cursor.fetchall()
-    
+        """Barcha foydalanuvchilarning chat_id larini olish"""
+        return [user['chat_id'] for user in self.users_table.all()]
+
     def exists_food(self, food_id):
-        cursor = self.get_cursor()
-        cursor.execute('SELECT * FROM food WHERE id = ?', (food_id,))
-        return cursor.fetchone() is not None
-import os
-print(os.path.exists(f'{folder}/db.sqlite3'))  # 
+        """Taom mavjudligini tekshirish"""
+        return self.food_table.contains(Query().id == food_id)
+
+    def get_user_order_current(self, user_id):
+        """Foydalanuvchining hozirgi buyurtmalarini olish"""
+        return self.orders_table.search(Query().user_id == user_id)
+    
+    def user_register(self, name, chat_id):
+        """Foydalanuvchini ro'yxatdan o'tkazish"""
+        if not self.get_user(chat_id):
+            user_id = len(self.users_table.all()) + 1
+            self.users_table.insert({'id': user_id, 'name': name, 'chat_id': chat_id})
+            return True
+        return False
+    
+    def get_food_by_ids(self, food_ids):
+        """ID lar bo'yicha taomlarni olish"""
+        return self.food_table.get(Query().id ==food_ids)
+
+
+# Misol uchun ishlatish
+# db = DB()
+# db.startup()
+
+# # Yangi foydalanuvchi ro'yxatga olish
+# db.register_user('Alice', 123456789)
+
+# # Taom qo'shish
+# db.add_food('Pasta', 'pasta.jpg')
+
+# # Buyurtma qilish
+# db.order_food(1, 1)
+
+# # Foydalanuvchilarni olish
+# users = db.get_user(123456789)
+# print("Foydalanuvchi:", users)
+
+# # Taomlar ro'yxatini olish
+# food = db.get_food()
+# print("Taomlar:", food)
+
+# # Buyurtmalar ro'yxatini olish
+# orders = db.get_all_orders()
+# print("Buyurtmalar:", orders)

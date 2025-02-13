@@ -1,0 +1,127 @@
+{
+    "food": {
+        "1": {
+            "id": 1,
+            "name": " milliy toam",
+            "image": null
+        },
+        "2": {
+            "id": 2,
+            "name": " milliy toam 2",
+            "image": null
+        },
+        "3": {
+            "id": 3,
+            "name": "Taom nomi yo'q",
+            "image": "AgACAgIAAxkBAAPlZ63_JPpM9A9qOGMd6yx2y1XCWokAArvlMRudjmlJt-fh8X--xPgBAAMCAAN4AAM2BA"
+        },
+        "4": {
+            "id": 4,
+            "name": "Qovurama lag'mon",
+            "image": "AgACAgIAAxkBAAMlZ6239t7IX9_qqf7FNL3WA9Ngr6IAAi7fMRtKAwFLC5U43oOllFoBAAMCAAN5AAM2BA"
+        },
+        "5": {
+            "id": 5,
+            "name": "Choyxona palov \n(Achchiq osh)",
+            "image": "AgACAgIAAxkBAAMmZ6239uddGh0alb1ZYHdm3wn-b-MAAi_fMRtKAwFLzHxUmO0di_EBAAMCAAN5AAM2BA"
+        },
+        "6": {
+            "id": 6,
+            "name": "To'y oshi",
+            "image": "AgACAgIAAxkBAAMnZ6239u4wp_nWsjua8DfU_rC7lrQAAjHfMRtKAwFLVmzbtVlnjmMBAAMCAAN5AAM2BA"
+        },
+        "7": {
+            "id": 7,
+            "name": "Tovuq jarkob",
+            "image": "AgACAgIAAxkBAAMoZ6239rf7KWHYuJEnFKAXghqQqBcAAjPfMRtKAwFLvP_-0mFZh6ABAAMCAAN5AAM2BA"
+        },
+        "8": {
+            "id": 8,
+            "name": "Bistroganov",
+            "image": "AgACAgIAAxkBAAMpZ6239tlSZ09lHKnH0eLMqydL80sAAjTfMRtKAwFLTnMEw2czwVkBAAMCAAN5AAM2BA"
+        },
+        "9": {
+            "id": 9,
+            "name": "Kiev katleti",
+            "image": "AgACAgIAAxkBAAMqZ6239rYtf3NNLPhk_ErUoOj9TmQAAjvfMRtKAwFLRJc1LMOPg-kBAAMCAAN5AAM2BA"
+        },
+        "10": {
+            "id": 10,
+            "name": "Manpar",
+            "image": "AgACAgIAAxkBAAMrZ6239gSBNzFTpfjKFfLKbigynAwAAjzfMRtKAwFL03ngAAEWxppwAQADAgADeQADNgQ"
+        },
+        "11": {
+            "id": 11,
+            "name": "Bifshteks",
+            "image": "AgACAgIAAxkBAAMsZ6239jKQ7ekuBk4K_uxktVI3K3oAAj3fMRtKAwFL3ckGTp3QGwUBAAMCAAN5AAM2BA"
+        },
+        "12": {
+            "id": 12,
+            "name": "Chicken",
+            "image": "AgACAgIAAxkBAAMtZ6239lGcCFXTpFKfbcgJ1bGeK-cAAkLfMRtKAwFL3m1lvPv9ryIBAAMCAAN5AAM2BA"
+        },
+        "13": {
+            "id": 13,
+            "name": "Qovurama lag'mon",
+            "image": "AgACAgIAAxkBAAMlZ6239t7IX9_qqf7FNL3WA9Ngr6IAAi7fMRtKAwFLC5U43oOllFoBAAMCAAN5AAM2BA"
+        },
+        "14": {
+            "id": 14,
+            "name": "Choyxona palov \n(Achchiq osh)",
+            "image": "AgACAgIAAxkBAAMmZ6239uddGh0alb1ZYHdm3wn-b-MAAi_fMRtKAwFLzHxUmO0di_EBAAMCAAN5AAM2BA"
+        },
+        "15": {
+            "id": 15,
+            "name": "To'y oshi",
+            "image": "AgACAgIAAxkBAAMnZ6239u4wp_nWsjua8DfU_rC7lrQAAjHfMRtKAwFLVmzbtVlnjmMBAAMCAAN5AAM2BA"
+        },
+        "16": {
+            "id": 16,
+            "name": "Tovuq jarkob",
+            "image": "AgACAgIAAxkBAAMoZ6239rf7KWHYuJEnFKAXghqQqBcAAjPfMRtKAwFLvP_-0mFZh6ABAAMCAAN5AAM2BA"
+        },
+        "17": {
+            "id": 17,
+            "name": "Bistroganov",
+            "image": "AgACAgIAAxkBAAMpZ6239tlSZ09lHKnH0eLMqydL80sAAjTfMRtKAwFLTnMEw2czwVkBAAMCAAN5AAM2BA"
+        },
+        "18": {
+            "id": 18,
+            "name": "Kiev katleti",
+            "image": "AgACAgIAAxkBAAMqZ6239rYtf3NNLPhk_ErUoOj9TmQAAjvfMRtKAwFLRJc1LMOPg-kBAAMCAAN5AAM2BA"
+        },
+        "19": {
+            "id": 19,
+            "name": "Manpar",
+            "image": "AgACAgIAAxkBAAMrZ6239gSBNzFTpfjKFfLKbigynAwAAjzfMRtKAwFL03ngAAEWxppwAQADAgADeQADNgQ"
+        },
+        "20": {
+            "id": 20,
+            "name": "Bifshteks",
+            "image": "AgACAgIAAxkBAAMsZ6239jKQ7ekuBk4K_uxktVI3K3oAAj3fMRtKAwFL3ckGTp3QGwUBAAMCAAN5AAM2BA"
+        },
+        "21": {
+            "id": 21,
+            "name": "Chicken",
+            "image": "AgACAgIAAxkBAAMtZ6239lGcCFXTpFKfbcgJ1bGeK-cAAkLfMRtKAwFL3m1lvPv9ryIBAAMCAAN5AAM2BA"
+        }
+    },
+    "users": {
+        "1": {
+            "id": 1,
+            "name": "Anasxon A'zamov",
+            "chat_id": 1698951222
+        }
+    },
+    "orders": {
+        "1": {
+            "user_id": {
+                "id": 1,
+                "name": "Anasxon A'zamov",
+                "chat_id": 1698951222
+            },
+            "food_id": 1,
+            "created_at": "2025-02-13"
+        }
+    }
+}

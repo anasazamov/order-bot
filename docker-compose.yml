@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: order-bot
+    environment:
+      - TOKEN=8072666419:AAGplm6gIS9lW-oGySMcHVg0NHkc6ZGvEag
+    volumes:
+      - .:/app
+    restart: always
