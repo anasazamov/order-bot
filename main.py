@@ -60,6 +60,8 @@ def send_food_list(update: Update, context: CallbackContext):
     food_id = food['id']  
     image = food['image']
 
+
+
     food = InlineKeyboardButton(name, callback_data=f"order_{food_id}")
 
     if back and previus:
@@ -124,11 +126,17 @@ def add_food(update: Update, context: CallbackContext):
     if update.message.photo:
         image = update.message.photo[-1].file_id  
         name = update.message.caption if update.message.caption else "Taom nomi yo'q"
+        if not name:
+            update.message.reply_text("Iltimos, rasmda taom nomini kiriting.")
+            return
 
         db.add_food(name, image)  
         update.message.reply_text(f"{name} taomi bazaga qo'shildi.")
     elif update.message.text.startswith("/add_food"):
         name = update.message.text[9:]  
+        if not name:
+            update.message.reply_text("Iltimos, taom nomini kiriting.")
+            return
         db.add_food(name, None)
         update.message.reply_text(f"{name} taomi bazaga qo'shildi.")
 
