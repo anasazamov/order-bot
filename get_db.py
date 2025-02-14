@@ -70,7 +70,7 @@ class DB:
 
     def get_user(self, chat_id):
         """Foydalanuvchini chat_id orqali olish"""
-        return self.users_table.search(Query().chat_id == chat_id)
+        return self.users_table.get(Query().chat_id == chat_id)
 
     def get_food(self):
         """Taomlar ro'yxatini olish"""
