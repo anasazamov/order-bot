@@ -68,9 +68,12 @@ def send_food_list(update: Update, context: CallbackContext):
         keyboard = [[back, food]]
     elif not back and previus:
         keyboard = [[food, previus]]
+    elif not back and not previus:
+        keyboard = [[food]]
+    elif back and not previus:
+        keyboard = [[back, food]]
     else:
         keyboard = [[food]]
-
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     if image:
@@ -133,7 +136,7 @@ def get_orders(update: Update, context: CallbackContext):
     orders = db.get_all_orders()
     message = "Bugungi buyurtmalar ro'yxati:\n\n"
     today_orders = db.get_today_orders_summary()
-    txt = ""
+    txt = "Umumi buyurtmalar soni:\n\n"
 
     for food_name, count in today_orders.items():
         txt += f"<b>{food_name}</b> - {count} taom\n"
