@@ -110,7 +110,7 @@ def button(update: Update, context: CallbackContext):
         query.edit_message_text("Uzr, bu taom hozirda mavjud emas.")
         return
     
-    food = db.get_food_by_ids(food_id)
+    food = db.get_food_by_ids(food_id)['id']
     print(food)
     db.order_food(user, food)
     query.message.delete()
